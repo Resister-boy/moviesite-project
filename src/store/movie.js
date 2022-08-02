@@ -7,8 +7,9 @@ export default {
   // data
   state: () => ({
     movies: [] ,
-    message: '',
-    loading: false
+    message: 'Search for the movie title!',
+    loading: false,
+    theMovie: {}
   }),
   // computed
   getters: {
@@ -31,6 +32,13 @@ export default {
   // methods => 데이터 변경 불가 + 비동기
   actions: {
     async searchMovies({ commit, state }, payload) {
+      if(state.loading) return
+
+      commit('updateState', {
+        message: '',
+        loading: true
+      })
+
       try {
         // 최초 요청
         const response = await _fetchMovie({
@@ -67,17 +75,45 @@ export default {
           movies: [], 
           message
         })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
       }
+    },
+    async searchMovieWithId({ state, commit }, payload) {
+      if(state.loading) return 
+      
+      commit('updateState', {
+        theMovie: {},
+        loading: true
+      })
 
-
-    }
+      try {
+        const response = await _fetchMovie(payload)
+        console.log(response.data)
+        commit('updateState', {
+          theMovie: response.data
+        })
+      } catch (error) {
+        commit('updateState', {
+          theMovie: {}
+        })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
+    },
   }
 }
 
 function _fetchMovie(payload) {
-  const { title, type, year, page } = payload
+  const { title, type, year, page, id } = payload
   const OMDB_API_KEY  = '7035c60c'
-  const apiUrl = `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&=${year}&page=${page}`
+  const apiUrl = id 
+    ? `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}` 
+    : `http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&=${year}&page=${page}`
 
   return new Promise((resolve, reject) => {
     axios.get(apiUrl)
