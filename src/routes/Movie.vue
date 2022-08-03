@@ -75,6 +75,7 @@
   </div>
 </template>
 <script>
+import { mapActions, mapState } from 'vuex';
 import Loader from '../components/Loader.vue'
   export default {
     name: 'Movie',
@@ -83,7 +84,8 @@ import Loader from '../components/Loader.vue'
     },
     created() {
         console.log(this.$route);
-        this.$store.dispatch("movie/searchMovieWithId", {
+        // this.$store.dispatch("movie/searchMovieWithId", {
+          this.searchMovieWithId({
             // movie/tt1234678
             id: this.$route.params.id
         });
@@ -94,14 +96,21 @@ import Loader from '../components/Loader.vue'
       }
     },
     computed: {
-      theMovie() {
-        return this.$store.state.movie.theMovie
-      },
-      loading() {
-        return this.$store.state.movie.loading
-      }
+      ...mapState('movie', [
+        'theMovie',
+        'loading'
+      ]) 
+      // theMovie() {
+      //   return this.$store.state.movie.theMovie
+      // },
+      // loading() {
+      //   return this.$store.state.movie.loading
+      // }
     },
     methods: {
+      ...mapActions('movie', [
+        'searchMovieWithId'
+      ]),
       requestDiffSizeImage(url, size = 700) {
         if(!url || url === 'N/A') {
           this.imageLoading = false
@@ -222,6 +231,36 @@ import Loader from '../components/Loader.vue'
         color: $black;
         font-family: "Oswald", sans-serif;
         font-size: 20px ;
+      }
+    }
+    @include media-breakpoint-down(xl) {
+      .poster {
+        width: 300px;
+        height: 300px * (3/2);
+        margin-right: 40px;
+      }
+    }
+
+    @include media-breakpoint-down(lg) {
+      display: none;
+      .poster {
+        margin-bottom: 40px;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      .specs {
+        .title {
+          font-size: 50px;
+        }
+        .ratings {
+          .rating-wrap {
+            display: block;
+            .rating {
+              margin-top: 10px;
+            }
+          }
+        }
       }
     }
   }
