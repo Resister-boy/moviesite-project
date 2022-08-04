@@ -29,11 +29,6 @@ export default {
     MovieItem,
     Loader
   },
-  data() {
-    return {
-
-    }
-  },
   computed: {
     ...mapState('movie', [
       'movies',

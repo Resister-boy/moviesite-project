@@ -72,15 +72,19 @@
         </div>
       </div>
     </div>
+    <WebSearch />
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
 import Loader from '../components/Loader.vue'
+import WebSearch from '../components/WebSearch.vue';
+
   export default {
     name: 'Movie',
     components: { 
-      Loader 
+      Loader,
+      WebSearch
     },
     created() {
         console.log(this.$route);
