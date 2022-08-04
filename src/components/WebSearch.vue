@@ -51,7 +51,6 @@ import axios from 'axios'
       getResult() {
         this.showSearchResult = true
         const title = this.theMovie.Title
-        const APIKEY = 'AIzaSyD1fS9wdehhspvTmKimSRlRwxdnr-ywKLw'
         const apiUrl = `https://customsearch.googleapis.com/customsearch/v1?key=${APIKEY}&cx=07986711742b84d6e&q=${title}`
         axios.get(apiUrl) 
         .then((response) => {
