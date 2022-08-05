@@ -18,6 +18,8 @@
   }
 </script>
 <style lang="scss" scoped>
+@import "../scss/main.scss";
+
   footer {
     margin-top: 50px;
     padding: 30px 0 ;
@@ -26,6 +28,11 @@
     .logo {
       display: block;
       margin-bottom: 4px;
+    }
+
+    a {
+      color: $primary;
+      text-decoration: none;
     }
   }
 </style>

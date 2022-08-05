@@ -16,7 +16,9 @@
       {{ email }}
     </div>
     <div>
-      <a :href="blog">
+      <a 
+        class="link"
+        :href="blog">
         Mirror 바로가기
       </a>  
     </div>
@@ -71,6 +73,7 @@ import Loader from '../components/Loader.vue'
 @import '../scss/main.scss';
   .about {
     text-align: center;
+    height: 438px;
     .photo {
       width: 250px;
       height: 250px;
@@ -88,6 +91,14 @@ import Loader from '../components/Loader.vue'
       font-size: 40px;
       font-family: "Oswald", sans-serif;
       margin-bottom: 20px;
+    }
+    div {
+      .link {
+        transition: all .2s;
+        &:hover {
+          color: $primary;
+        }
+      }
     }
   }
 </style>

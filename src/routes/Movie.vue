@@ -1,95 +1,103 @@
 <template>
-  <div class="container">
-    <template v-if="loading">
-      <div class="skeletons">
-        <div class="skeleton poster"></div>
-        <div class="specs">
-          <div class="skeleton title"></div>
-          <div class="skeleton spec"></div>
-          <div class="skeleton plot"></div>
-          <div class="skeleton etc"></div>
-          <div class="skeleton etc"></div>
-          <div class="skeleton etc"></div>
-        </div>
-      </div>
-      <Loader 
-        :size="3"
-        :z-index="9"
-        fixed />
-    </template>
-    <div 
-      v-else 
-      class="movie-details"> 
-      <div 
-        :style="{ backgroundImage: `url(${requestDiffSizeImage(theMovie.Poster, 700)})`}"
-        class="poster">
-        <Loader 
-          v-if="imageLoading" 
-          absolute />
-      </div>
-      <div class="specs">
-        <div class="title">
-          {{ theMovie.Title }}
-        </div>
-        <div class="lables">
-          <span>{{ theMovie.Released }}</span>
-          <span>{{ theMovie.Runtime }}</span>
-          <span>{{ theMovie.Country }}</span>
-        </div>
-        <div class="plot">
-          {{ theMovie.Plot }}
-        </div>
-        <div class="ratings">
-          <h3>Ratings</h3>
-          <div class="rating-wrap">
-            <div
-              v-for="{ Source: name, Value: score } in theMovie.Ratings"
-              :key="name" 
-              :title="name"
-              class="rating">
-              <img 
-                :src="`https://github.com/ParkYoungWoong/vue3-movie-app/blob/master/src/assets/${name}.png?raw=true`"
-                :alt="`${name}`" />
-              <span>{{ score }}</span>
-            </div>
+  <div class="container"> 
+    <div v-if="this.$route.fullPath === '/movie/:id'">
+      <NoMovieId />
+    </div>
+    <div v-else>
+      <template v-if="loading">
+        <div class="skeletons">
+          <div class="skeleton poster"></div>
+          <div class="specs">
+            <div class="skeleton title"></div>
+            <div class="skeleton spec"></div>
+            <div class="skeleton plot"></div>
+            <div class="skeleton etc"></div>
+            <div class="skeleton etc"></div>
+            <div class="skeleton etc"></div>
           </div>
         </div>
-        <div>
-          <h3>Actors</h3>
-          {{ theMovie.Actors }}
+        <Loader 
+          :size="3"
+          :z-index="9"
+          fixed />
+      </template>
+      <div 
+        v-else 
+        class="movie-details"> 
+        <div 
+          :style="{ backgroundImage: `url(${requestDiffSizeImage(theMovie.Poster, 700)})`}"
+          class="poster">
+          <Loader 
+            v-if="imageLoading" 
+            absolute />
         </div>
-        <div>
-          <h3>Director</h3>
-          {{ theMovie.Director }}
-        </div>
-        <div>
-          <h3>Production</h3>
-          {{ theMovie.Production }}
-        </div>
-        <div>
-          <h3>Genre</h3>
-          {{ theMovie.Genre }}
+        <div class="specs">
+          <div class="title">
+            {{ theMovie.Title }}
+          </div>
+          <div class="lables">
+            <span>{{ theMovie.Released }}</span>
+            <span>{{ theMovie.Runtime }}</span>
+            <span>{{ theMovie.Country }}</span>
+          </div>
+          <div class="plot">
+            {{ theMovie.Plot }}
+          </div>
+          <div class="ratings">
+            <h3>
+              평점
+            </h3>
+            <div class="rating-wrap">
+              <div
+                v-for="{ Source: name, Value: score } in theMovie.Ratings"
+                :key="name" 
+                :title="name"
+                class="rating">
+                <img 
+                  :src="`https://github.com/ParkYoungWoong/vue3-movie-app/blob/master/src/assets/${name}.png?raw=true`"
+                  :alt="`${name}`" />
+                <span>{{ score }}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3>Actors</h3>
+            {{ theMovie.Actors }}
+          </div>
+          <div>
+            <h3>Director</h3>
+            {{ theMovie.Director }}
+          </div>
+          <div>
+            <h3>Production</h3>
+            {{ theMovie.Production }}
+          </div>
+          <div>
+            <h3>Genre</h3>
+            {{ theMovie.Genre }}
+          </div>
         </div>
       </div>
+      <WebSearch />
     </div>
-    <WebSearch />
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
 import Loader from '../components/Loader.vue'
 import WebSearch from '../components/WebSearch.vue';
+import NoMovieId from '../components/NoMovieId.vue';
 
   export default {
     name: 'Movie',
-    components: { 
-      Loader,
-      WebSearch
-    },
+    components: {
+    Loader,
+    WebSearch,
+    NoMovieId
+},
     created() {
         console.log(this.$route);
-        // this.$store.dispatch("movie/searchMovieWithId", {
-          this.searchMovieWithId({
+        this.$store.dispatch("movie/searchMovieWithId", {
             // movie/tt1234678
             id: this.$route.params.id
         });

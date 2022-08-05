@@ -1,5 +1,5 @@
 import axios from "axios";
-import _uniqBy from 'lodash/uniqBy'
+import _uniqBy from 'lodash/uniqBy' // list에서 중복되는 값 제거해주는 Library
 
 const _defaultMessage = 'Search for the movie title!'
 
@@ -8,14 +8,16 @@ export default {
   namespaced: true,
   // data
   state: () => ({
-    movies: [] ,
-    message: _defaultMessage,
-    loading: false,
-    theMovie: {}
+    movies: [] , // Array Type으로 movies Data 선언
+    message: _defaultMessage, // String Type으로 message 선언&할당
+    loading: false, // Boolean Type으로 loading 선언 & 할당
+    theMovie: {} // Object Type으로 theMovie 선언
   }),
   // computed
+  // Dynamic한 변수 컨트롤
   getters: {
     movieIds(state) {
+      // movies list에서 movie.imdbID로 반환
       return state.movies.map(movie => movie.imdbID)
     }
   },
@@ -23,6 +25,7 @@ export default {
   mutations: {
     updateState(state, payload) {
       // ['movies', 'message', 'loading']
+      // Data 상태 변경
       Object.keys(payload).forEach(key => {
         state[key] = payload[key]
       })
